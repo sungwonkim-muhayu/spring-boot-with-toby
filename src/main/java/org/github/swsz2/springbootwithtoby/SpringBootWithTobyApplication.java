@@ -44,11 +44,15 @@ public class SpringBootWithTobyApplication {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
+
+      final HelloController helloController = new HelloController();
+
       if ("/hello".equals(req.getRequestURI()) && HttpMethod.GET.name().equals(req.getMethod())) {
         final String name = req.getParameter("name");
+        final String ret = helloController.hello(name);
         resp.setStatus(HttpStatus.OK.value());
         resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-        resp.getWriter().print("hello servlet " + name);
+        resp.getWriter().print(ret);
       } else if ("/user".equals(req.getRequestURI())) {
         //
       } else {
