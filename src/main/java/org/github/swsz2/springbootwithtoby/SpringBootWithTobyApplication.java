@@ -3,6 +3,9 @@ package org.github.swsz2.springbootwithtoby;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +20,16 @@ public class SpringBootWithTobyApplication {
     // 서블릿 컨테이너는 어떠한 서블릿이 요청을 처리할지 매핑하는 역할을 가짐
     final ServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
     final WebServer webServer =
-        serverFactory.getWebServer(servletContext
-                -> servletContext.addServlet("hello",new HttpServlet() {
-                          @Override
-                          protected void service(HttpServletRequest req, HttpServletResponse resp)
-                              throws ServletException, IOException {
-                            resp.setStatus(200);
-                            resp.setHeader("Content-Type", "text/plain");
-                            resp.getWriter().print("hello servlet");
+        serverFactory.getWebServer(
+            servletContext ->
+                servletContext
+                    .addServlet("hello",new HttpServlet() {
+                        @Override
+                        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                            final String name = req.getParameter("name");
+                            resp.setStatus(HttpStatus.OK.value());
+                            resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                            resp.getWriter().print("hello servlet" + name);
                           }
                         })
                     .addMapping("/hello"));
