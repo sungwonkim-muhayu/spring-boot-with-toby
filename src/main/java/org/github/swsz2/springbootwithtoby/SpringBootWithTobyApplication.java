@@ -1,18 +1,9 @@
 package org.github.swsz2.springbootwithtoby;
 
+import org.github.swsz2.springbootwithtoby.servlet.FrontControllerServlet;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class SpringBootWithTobyApplication {
 
@@ -27,37 +18,5 @@ public class SpringBootWithTobyApplication {
                     .addServlet("frontController", new FrontControllerServlet())
                     .addMapping("/*"));
     webServer.start();
-  }
-
-  private static class HelloServlet extends HttpServlet {
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-      final String name = req.getParameter("name");
-      resp.setStatus(HttpStatus.OK.value());
-      resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-      resp.getWriter().print("hello servlet" + name);
-    }
-  }
-
-  private static class FrontControllerServlet extends HttpServlet {
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
-
-      final HelloController helloController = new HelloController();
-
-      if ("/hello".equals(req.getRequestURI()) && HttpMethod.GET.name().equals(req.getMethod())) {
-        final String name = req.getParameter("name");
-        final String ret = helloController.hello(name);
-        resp.setStatus(HttpStatus.OK.value());
-        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-        resp.getWriter().print(ret);
-      } else if ("/user".equals(req.getRequestURI())) {
-        //
-      } else {
-        resp.setStatus(HttpStatus.NOT_FOUND.value());
-      }
-    }
   }
 }
