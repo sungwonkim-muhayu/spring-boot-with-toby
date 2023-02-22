@@ -1,6 +1,7 @@
 package org.github.swsz2.springbootwithtoby;
 
 import org.github.swsz2.springbootwithtoby.controller.HelloController;
+import org.github.swsz2.springbootwithtoby.service.SimpleHelloService;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -22,6 +23,7 @@ public class SpringBootWithTobyApplication {
     // 스프링 컨테이너에 빈 등록
     final GenericApplicationContext applicationContext = new GenericApplicationContext();
     applicationContext.registerBean(HelloController.class);
+    applicationContext.registerBean(SimpleHelloService.class);
     applicationContext.refresh();
 
     // 빈 서블릿 컨테이너 생성
