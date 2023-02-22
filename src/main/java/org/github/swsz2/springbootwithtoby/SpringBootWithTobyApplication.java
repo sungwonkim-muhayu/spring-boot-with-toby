@@ -5,23 +5,14 @@ import org.github.swsz2.springbootwithtoby.service.SimpleHelloService;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 public class SpringBootWithTobyApplication {
 
   public static void main(String[] args) {
     // 스프링 컨테이너에 빈 등록
-    final GenericApplicationContext applicationContext = new GenericApplicationContext();
+    final GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
     applicationContext.registerBean(HelloController.class);
     applicationContext.registerBean(SimpleHelloService.class);
     applicationContext.refresh();
@@ -33,28 +24,8 @@ public class SpringBootWithTobyApplication {
         serverFactory.getWebServer(
             servletContext ->
                 servletContext
-                    .addServlet(
-                        "frontController",
-                        new HttpServlet() {
-                          @Override
-                          protected void service(HttpServletRequest req, HttpServletResponse resp)
-                              throws ServletException, IOException {
-
-                            if ("/hello".equals(req.getRequestURI())
-                                && HttpMethod.GET.name().equals(req.getMethod())) {
-                              final String name = req.getParameter("name");
-                              final HelloController helloController =
-                                  applicationContext.getBean(HelloController.class);
-                              final String ret = helloController.hello(name);
-
-                              resp.setStatus(HttpStatus.OK.value());
-                              resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                              resp.getWriter().print(ret);
-                            } else {
-                              resp.setStatus(HttpStatus.NOT_FOUND.value());
-                            }
-                          }
-                        })
+                    // 프론트 컨트롤러의 역할을 디스패처 서블릿이 대신 처리할 수 있도록 함
+                    .addServlet("dispatcherServlet", new DispatcherServlet(applicationContext))
                     .addMapping("/*"));
     webServer.start();
   }
