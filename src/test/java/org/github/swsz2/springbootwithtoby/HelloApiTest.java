@@ -16,7 +16,7 @@ public class HelloApiTest {
 
     // given
     final String name = "Spring";
-    final String expectedBody = "hello Spring";
+    final String expectedBody = "*hello Spring*";
 
     // when
     final ResponseEntity<String> responseEntity =
