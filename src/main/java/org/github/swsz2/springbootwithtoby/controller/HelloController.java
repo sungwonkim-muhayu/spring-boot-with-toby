@@ -2,11 +2,10 @@ package org.github.swsz2.springbootwithtoby.controller;
 
 import org.github.swsz2.springbootwithtoby.service.HelloService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Objects;
 
 // @RestController // html 통째로 리턴, api 요청에 대한 응답을 특정 타입으로 인코딩해 전달
 @RequestMapping // 빈이 많아지면 탐색하기 힘드니, 클래스 레벨에서 먼저 찾을 수 있도록 RequestMapping 선언
@@ -31,6 +30,11 @@ public class HelloController {
   @GetMapping("/hello")
   @ResponseBody
   public String hello(String name) {
-    return helloService.sayHello(Objects.requireNonNull(name));
+
+    if (!StringUtils.hasText(name)) {
+      throw new IllegalArgumentException();
+    }
+
+    return helloService.sayHello(name);
   }
 }
