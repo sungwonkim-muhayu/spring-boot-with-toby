@@ -1,4 +1,4 @@
-package org.github.swsz2.springbootwithtoby.annotation;
+package org.github.swsz2.configuration;
 
 import org.springframework.stereotype.Component;
 

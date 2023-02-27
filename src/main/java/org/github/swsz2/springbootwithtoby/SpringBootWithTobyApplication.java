@@ -1,9 +1,9 @@
 package org.github.swsz2.springbootwithtoby;
 
-import org.github.swsz2.springbootwithtoby.annotation.MySpringBootAnnotation;
+import org.github.swsz2.configuration.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
-@MySpringBootAnnotation
+@MySpringBootApplication
 public class SpringBootWithTobyApplication {
   public static void main(String[] args) {
     SpringApplication.run(SpringBootWithTobyApplication.class, args);
