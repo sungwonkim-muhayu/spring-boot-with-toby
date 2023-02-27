@@ -1,10 +1,10 @@
 package org.github.swsz2.configuration.auto;
 
+import org.github.swsz2.configuration.MyAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@Configuration // 스프링 컨테이너야. 구성 정보를 가지고 있는 클래스니까, 안에 설정된 빈 오브젝트를 만들어줘!
+@MyAutoConfiguration // 스프링 컨테이너야. 구성 정보를 가지고 있는 클래스니까, 안에 설정된 빈 오브젝트를 만들어줘!
 public class DispatcherServletConfiguration {
   @Bean
   public DispatcherServlet dispatcherServlet() {
