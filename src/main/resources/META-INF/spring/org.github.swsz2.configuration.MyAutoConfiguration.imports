@@ -1,2 +1,3 @@
 org.github.swsz2.configuration.auto.DispatcherServletConfiguration
 org.github.swsz2.configuration.auto.TomcatWebServerConfiguration
+org.github.swsz2.configuration.auto.JettyWebServerConfiguration
